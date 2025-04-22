@@ -1,16 +1,18 @@
+# Base image with selected CUDA version (with cuDNN, on Ubuntu 24.04)
 ARG CUDA_IMAGE_VERSION=12.8.1-cudnn-devel-ubuntu24.04
-
 FROM nvcr.io/nvidia/cuda:${CUDA_IMAGE_VERSION}
 
+# Ensure all NVIDIA GPU devices and driver capabilities are accessible
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
-# Install specific version of TensorRT packages
+# Define the version of TensorRT to install
 ARG TENSORRT_VERSION=10.9.0.34-1+cuda12.8
 
+# Set noninteractive mode for apt to avoid prompts during package installation
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Install build tools, build dependencies and TensorRT
+# Install build tools, development dependencies, and TensorRT packages
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
         # Core build & system tools
@@ -30,12 +32,12 @@ RUN apt-get update && apt-get upgrade -y && \
         valgrind \
         swig \
         yasm \
-        # Python-related
+        # Python and package tools
         python3 \
         python3-dev \
         python3-pip \
         python3-setuptools \
-        # Image & video processing
+        # Image & video processing libraries
         libjpeg-dev \
         libpng-dev \
         libtiff-dev \
@@ -50,7 +52,7 @@ RUN apt-get update && apt-get upgrade -y && \
         libv4l-dev \
         libxvidcore-dev \
         libx264-dev \
-        # GUI and rendering
+        # GUI and rendering support
         libgtk2.0-dev \
         libglew-dev \
         libsm6 \
@@ -62,38 +64,43 @@ RUN apt-get update && apt-get upgrade -y && \
         # Protobuf
         libprotobuf-dev \
         protobuf-compiler && \
-        # TensorRT
-        if [ -n "${TENSORRT_TENSORRT_VERSION}" ]; then apt-get install -y --no-install-recommends \
-            libnvinfer-bin=${TENSORRT_VERSION} \
-            libnvinfer-dev=${TENSORRT_VERSION} \
-            libnvinfer-dispatch-dev=${TENSORRT_VERSION} \
-            libnvinfer-dispatch10=${TENSORRT_VERSION} \
-            libnvinfer-headers-dev=${TENSORRT_VERSION} \
-            libnvinfer-headers-plugin-dev=${TENSORRT_VERSION} \
-            libnvinfer-lean-dev=${TENSORRT_VERSION} \
-            libnvinfer-lean10=${TENSORRT_VERSION} \
-            libnvinfer-plugin-dev=${TENSORRT_VERSION} \
-            libnvinfer-plugin10=${TENSORRT_VERSION} \
-            libnvinfer-samples=${TENSORRT_VERSION} \
-            libnvinfer-vc-plugin-dev=${TENSORRT_VERSION} \
-            libnvinfer-vc-plugin10=${TENSORRT_VERSION} \
-            libnvinfer10=${TENSORRT_VERSION} \
-            libnvonnxparsers-dev=${TENSORRT_VERSION} \
-            libnvonnxparsers10=${TENSORRT_VERSION} \
-            python3-libnvinfer-dev=${TENSORRT_VERSION} \
-            python3-libnvinfer-dispatch=${TENSORRT_VERSION} \
-            python3-libnvinfer-lean=${TENSORRT_VERSION} \
-            python3-libnvinfer=${TENSORRT_VERSION} \
-            tensorrt-dev=${TENSORRT_VERSION} \
-            tensorrt-libs=${TENSORRT_VERSION} \
-            tensorrt=${TENSORRT_VERSION}; \
-        fi && \
+    \
+    # Install specific version of TensorRT and its components (if version is defined)
+    if [ -n "${TENSORRT_TENSORRT_VERSION}" ]; then apt-get install -y --no-install-recommends \
+        libnvinfer-bin=${TENSORRT_VERSION} \
+        libnvinfer-dev=${TENSORRT_VERSION} \
+        libnvinfer-dispatch-dev=${TENSORRT_VERSION} \
+        libnvinfer-dispatch10=${TENSORRT_VERSION} \
+        libnvinfer-headers-dev=${TENSORRT_VERSION} \
+        libnvinfer-headers-plugin-dev=${TENSORRT_VERSION} \
+        libnvinfer-lean-dev=${TENSORRT_VERSION} \
+        libnvinfer-lean10=${TENSORRT_VERSION} \
+        libnvinfer-plugin-dev=${TENSORRT_VERSION} \
+        libnvinfer-plugin10=${TENSORRT_VERSION} \
+        libnvinfer-samples=${TENSORRT_VERSION} \
+        libnvinfer-vc-plugin-dev=${TENSORRT_VERSION} \
+        libnvinfer-vc-plugin10=${TENSORRT_VERSION} \
+        libnvinfer10=${TENSORRT_VERSION} \
+        libnvonnxparsers-dev=${TENSORRT_VERSION} \
+        libnvonnxparsers10=${TENSORRT_VERSION} \
+        python3-libnvinfer-dev=${TENSORRT_VERSION} \
+        python3-libnvinfer-dispatch=${TENSORRT_VERSION} \
+        python3-libnvinfer-lean=${TENSORRT_VERSION} \
+        python3-libnvinfer=${TENSORRT_VERSION} \
+        tensorrt-dev=${TENSORRT_VERSION} \
+        tensorrt-libs=${TENSORRT_VERSION} \
+        tensorrt=${TENSORRT_VERSION}; \
+    fi && \
+    \
+    # Clean up to reduce image size
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# OpenCV version to build from source
 ARG OPENCV_VERSION=4.11.0
 WORKDIR /opt
 
+# Download, build, and install OpenCV with CUDA support
 RUN if [ -n "$OPENCV_VERSION" ]; then \
         git clone --branch ${OPENCV_VERSION} --depth 1 https://github.com/opencv/opencv.git && \
         git clone --branch ${OPENCV_VERSION} --depth 1 https://github.com/opencv/opencv_contrib.git && \
