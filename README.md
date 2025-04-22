@@ -15,8 +15,8 @@ This tutorial works on both **x86_64 (AMD/Intel)** and **ARM** architectures.
 ## Prerequisites
 
 Make sure you have the following installed:
-1. [Docker](https://docs.docker.com/desktop/)
-2. [Visual Studio Code](https://code.visualstudio.com/)
+1. [**Docker**](https://docs.docker.com/desktop/)
+2. [**Visual Studio Code**](https://code.visualstudio.com/)
 
 If it’s not installed, you can install it using this [link](https://code.visualstudio.com/download), or via terminal:
 
@@ -34,7 +34,7 @@ code --install-extension ms-vscode-remote.remote-containers
 ## Installation
 First, clone the repository
 ``` bash
-git clone TO DO
+git clone https://github.com/PierreMarieCurie/ubuntu-cuda-tensorrt-opencv-docker.git
 ```
 Then, open the project in VS Code
 ``` bash
