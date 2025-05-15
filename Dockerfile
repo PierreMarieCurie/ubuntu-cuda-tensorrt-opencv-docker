@@ -66,7 +66,7 @@ RUN apt-get update && apt-get upgrade -y && \
         protobuf-compiler && \
     \
     # Install specific version of TensorRT and its components (if version is defined)
-    if [ -n "${TENSORRT_TENSORRT_VERSION}" ]; then apt-get install -y --no-install-recommends \
+    if [ -n "${TENSORRT_VERSION}" ]; then apt-get install -y --no-install-recommends \
         libnvinfer-bin=${TENSORRT_VERSION} \
         libnvinfer-dev=${TENSORRT_VERSION} \
         libnvinfer-dispatch-dev=${TENSORRT_VERSION} \
