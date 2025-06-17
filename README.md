@@ -1,6 +1,6 @@
 # Dev Container for Machine Learning & Computer Vision
 
-This repository provides a **ready-to-use Development Container** setup for **machine learning** and **computer vision** projects, powered by [Dev Containers]((https://github.com/devcontainers)).
+This repository provides a ready-to-use **Dockerfile** and **Development Container setup** for **machine learning** and **computer vision** projects. More information about [Dev Containers here]((https://github.com/devcontainers)).
 
 It allows you to easily customize and select specific versions of:
 - **Ubuntu**
@@ -14,9 +14,11 @@ This tutorial works on both **x86_64 (AMD/Intel)** and **ARM** architectures.
 
 ## Prerequisites
 
-Make sure you have the following installed:
-1. [**Docker**](https://docs.docker.com/desktop/)
-2. [**Visual Studio Code**](https://code.visualstudio.com/)
+Make sure [**Docker**](https://docs.docker.com/desktop/) is installed on your machine.
+
+If using Dev Containers:
+
+1. [**Visual Studio Code**](https://code.visualstudio.com/)
 
 If it’s not installed, you can install it using this [link](https://code.visualstudio.com/download), or via terminal:
 
@@ -24,7 +26,7 @@ If it’s not installed, you can install it using this [link](https://code.visua
 sudo apt update
 sudo apt install code
 ```
-3. **Dev Containers Extension** for VS Code
+2. **Dev Containers Extension** for VS Code
 
 You can install it from the Extensions panel, or via terminal:
 ``` bash
@@ -32,18 +34,40 @@ code --install-extension ms-vscode-remote.remote-containers
 ```
 
 ## Installation
-First, clone the repository
+First, clone the repository:
 ``` bash
 git clone https://github.com/PierreMarieCurie/ubuntu-cuda-tensorrt-opencv-docker.git
 ```
-Then, open the project in VS Code
+Then, go into the repository:
+```
+cd devcontainer-cuda-tensorrt-opencv/
+```
+If using Dev Containers, open the project in VS Code
 ``` bash
-code devcontainer-cuda-tensorrt-opencv/
+code .
 ```
 
-## Usage
+## Usage and build
 
-### Selection of Ubuntu and CUDA versions 
+Please note that building the image can take a long time, especially when compiling OpenCV.
+
+If you plan to test multiple combinations of **Ubuntu, CUDA, TensorRT, and OpenCV versions**, a good practice is to tag the image with a version name that suits your needs. For example, you can replace an image tag ```my-dev-image``` with ```my-dev-image:xxx```, where ```xxx``` represents a useful version tag for you, such as ```my-dev-image:ubuntu-24.04_cuda-12.8.1_tensorrt-10.9.0.34_opencv-4.11.0```.
+
+### Latest version of Ubuntu/CUDA/TensorRT/OpenCV
+
+To use the lastest version provided by the Dockerfile, just run:
+```bash
+docker build -t my-dev-image .  
+```
+Currently, the versions provided by the Dockerfile are:
+1. **Ubuntu**: 24.04
+2. **CUDA**: 12.8.1
+3. **TensorRT**: 10.9
+4. **OpenCV**: 4.11.0
+
+### Specific version of Ubuntu/CUDA/TensorRT/OpenCV
+
+#### Selection of Ubuntu and CUDA versions
 
 1. Visit the official [NVIDIA GitLab](https://gitlab.com/nvidia/container-images/cuda/blob/master/doc/supported-tags.md) page to choose the appropriate CUDA image for your project.
 
@@ -57,7 +81,7 @@ If your driver is outdated, you can [download and install the latest version her
 CUDA_IMAGE_VERSION=12.8.1-cudnn-runtime-ubuntu24.04
 ```
 
-### Selection of TensorRT version
+#### Selection of TensorRT version
 
 Navigating the NVIDIA documentation can be challenging, especially when you're looking to use a **specific version of TensorRT** rather than the latest one.
 
@@ -98,7 +122,7 @@ If you don't want to use TensorRT, simply leave the variable empty.
 TENSORRT_VERSION=
 ```
 
-### Selection of OpenCV version
+#### Selection of OpenCV version
 
 To pick an **OpenCV** version that fits your needs, go to the official [OpenCV release page](https://opencv.org/releases/). You There, you’ll find the full release history, patch notes for each version and important changes or known issues.
 
@@ -112,7 +136,7 @@ f you don't want to use OpenCV, simply leave the variable empty.
 OPENCV_VERSION=
 ```
 
-## Build and get into the development environment
+#### Build
 
 First, **build the Docker image** using the following command:
 ```bash
@@ -123,9 +147,10 @@ docker build \
 -t my-dev-image .                                                   
 ```
 
-Please note that building the image can take a long time, especially when compiling OpenCV.
+### Optional
+Some networks or cloud providers block http:// traffic for security reasons. To use https:// instead during the Docker build, add the build argument ```--build-arg USE_HTTPS=true``` to your docker build command.
 
-If you plan to test multiple combinations of **Ubuntu, CUDA, TensorRT, and OpenCV versions**, a good practice is to tag the image with a version name that suits your needs. For example, you can replace ```my-dev-image``` with ```my-dev-image:xxx```, where ```xxx``` represents a useful version tag for you, such as ```my-dev-image:ubuntu-24.04_cuda-12.8.1_tensorrt-10.9.0.34_opencv-4.11.0```.
+## Get into the Development Environment 
 
 To start working in the **development container**:
 1. **Open the project folder in VS Code** if it is not already done
@@ -169,7 +194,4 @@ See the [LICENSE](LICENSE) file for more details.
 ## Acknowledgements
 
 - Thanks to [JulianAssmann/opencv-cuda-docker](https://github.com/JulianAssmann/opencv-cuda-docker/tree/master) on integrating OpenCV with CUDA in Docker. It gave me the initial idea for creating this repo.
-
-## TO DO
-- Add a lightweight runtime-only image for deployment
-- Maybe add illustrations
+- Thanks to [kneave](https://github.com/kneave) for the https tip.
