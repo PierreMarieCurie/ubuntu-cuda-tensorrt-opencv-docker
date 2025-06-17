@@ -1,6 +1,6 @@
 # Dev Container for Machine Learning & Computer Vision
 
-This repository provides a ready-to-use **Dockerfile** and **Development Container setup** for **machine learning** and **computer vision** projects. More information about [Dev Containers here]((https://github.com/devcontainers)).
+This repository provides a ready-to-use **Dockerfile** and **Development Container setup** for **machine learning** and **computer vision** projects. More informations about Dev Containers [here]((https://github.com/devcontainers)).
 
 It allows you to easily customize and select specific versions of:
 - **Ubuntu**
