@@ -76,31 +76,31 @@ RUN apt-get update && apt-get upgrade -y && \
         protobuf-compiler && \
     \
     # Install specific version of TensorRT and its components (if version is defined)
-    #if [ -n "${TENSORRT_VERSION}" ]; then apt-get install -y --no-install-recommends \
-    #    libnvinfer-bin=${TENSORRT_VERSION} \
-    #    libnvinfer-dev=${TENSORRT_VERSION} \
-    #    libnvinfer-dispatch-dev=${TENSORRT_VERSION} \
-    #    libnvinfer-dispatch10=${TENSORRT_VERSION} \
-    #    libnvinfer-headers-dev=${TENSORRT_VERSION} \
-    #    libnvinfer-headers-plugin-dev=${TENSORRT_VERSION} \
-    #    libnvinfer-lean-dev=${TENSORRT_VERSION} \
-    #    libnvinfer-lean10=${TENSORRT_VERSION} \
-    #    libnvinfer-plugin-dev=${TENSORRT_VERSION} \
-    #    libnvinfer-plugin10=${TENSORRT_VERSION} \
-    #    libnvinfer-samples=${TENSORRT_VERSION} \
-    #    libnvinfer-vc-plugin-dev=${TENSORRT_VERSION} \
-    #    libnvinfer-vc-plugin10=${TENSORRT_VERSION} \
-    #    libnvinfer10=${TENSORRT_VERSION} \
-    #    libnvonnxparsers-dev=${TENSORRT_VERSION} \
-    #    libnvonnxparsers10=${TENSORRT_VERSION} \
-    #    python3-libnvinfer-dev=${TENSORRT_VERSION} \
-    #    python3-libnvinfer-dispatch=${TENSORRT_VERSION} \
-    #    python3-libnvinfer-lean=${TENSORRT_VERSION} \
-    #    python3-libnvinfer=${TENSORRT_VERSION} \
-    #    tensorrt-dev=${TENSORRT_VERSION} \
-    #    tensorrt-libs=${TENSORRT_VERSION} \
-    #    tensorrt=${TENSORRT_VERSION}; \
-    #fi && \
+    if [ -n "${TENSORRT_VERSION}" ]; then apt-get install -y --no-install-recommends \
+        libnvinfer-bin=${TENSORRT_VERSION} \
+        libnvinfer-dev=${TENSORRT_VERSION} \
+        libnvinfer-dispatch-dev=${TENSORRT_VERSION} \
+        libnvinfer-dispatch10=${TENSORRT_VERSION} \
+        libnvinfer-headers-dev=${TENSORRT_VERSION} \
+        libnvinfer-headers-plugin-dev=${TENSORRT_VERSION} \
+        libnvinfer-lean-dev=${TENSORRT_VERSION} \
+        libnvinfer-lean10=${TENSORRT_VERSION} \
+        libnvinfer-plugin-dev=${TENSORRT_VERSION} \
+        libnvinfer-plugin10=${TENSORRT_VERSION} \
+        libnvinfer-samples=${TENSORRT_VERSION} \
+        libnvinfer-vc-plugin-dev=${TENSORRT_VERSION} \
+        libnvinfer-vc-plugin10=${TENSORRT_VERSION} \
+        libnvinfer10=${TENSORRT_VERSION} \
+        libnvonnxparsers-dev=${TENSORRT_VERSION} \
+        libnvonnxparsers10=${TENSORRT_VERSION} \
+        python3-libnvinfer-dev=${TENSORRT_VERSION} \
+        python3-libnvinfer-dispatch=${TENSORRT_VERSION} \
+        python3-libnvinfer-lean=${TENSORRT_VERSION} \
+        python3-libnvinfer=${TENSORRT_VERSION} \
+        tensorrt-dev=${TENSORRT_VERSION} \
+        tensorrt-libs=${TENSORRT_VERSION} \
+        tensorrt=${TENSORRT_VERSION}; \
+    fi && \
     \
     # Clean up to reduce image size
     apt-get clean && \
